@@ -4,6 +4,8 @@
 
 Well first, you need to rename the variables.env.sample file to variables.env. This is an important step as I wanted to ensure that the sample variable file is saved and accessible to github without uploading the real file and exposing sensitive data. Note that within the .gitignore file, there is a line for .env, this will ensure that once you rename your file to variables.env, it will not be tracked by github and will not be posted to the Repository.
 
+variables.env is specific because within the start.js file, I reference the path to variables.env, this can be modified if you prefer something else but make sure to modify the environment variables file name, along with the configuration setup within start.js. 
+
 From within the variables file it should look as this:
 
 ```
