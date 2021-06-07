@@ -1,5 +1,5 @@
 # Dynatrace Security API Export
-###### Currently this is just a preview program to export data using the new Dynatrace Security API
+###### Currently this is just a preview program to export data using the new Dynatrace Security API. This is not supported by Dyantrace, but just a personal program I wrote.
 
 ## How to get this working?
 
