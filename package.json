@@ -1,0 +1,17 @@
+{
+  "name": "tyler.ouellette",
+  "version": "1.0.0",
+  "description": "KeyUserAction Audit",
+  "main": "index.js",
+  "scripts": {
+    "start": "node start.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "dotenv": "^10.0.0",
+    "express": "^4.17.1",
+    "https": "^1.0.0",
+    "node-fetch": "^2.6.1"
+  }
+}
