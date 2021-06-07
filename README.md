@@ -8,10 +8,10 @@ From within the variables file it should look as this:
 
 ```
 PROD=https://YourProdTenantURLHere.com
-PROD_TOKEN=""
+PROD_TOKEN="Api-Token dt...xxxxxxxxxxx"
 
 NON_PROD=https://YourNonProdTenantURLHere.com
-NONPROD_TOKEN=""
+NONPROD_TOKEN="Api-Token dt...xxxxxxxxxxx"
 ```
 
 ###### *Note: The Token must be within Quotes and include the "Api-Token dt...xxxxxxxxxxx" format, but the Tenant URL should NOT include quotes around it.*
