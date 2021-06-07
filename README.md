@@ -1,6 +1,10 @@
 # Dynatrace Security API Export
 ###### Currently this is just a preview program to export data using the new Dynatrace Security API. This is not supported by Dyantrace, but just a personal program I wrote.
 
+### Prerequisites
+
+- Node.js Version 7.6+, just install the latest if you can.
+
 ## How to get this working?
 
 Well First step is downloading the dependencies. To do so, within the base folder of the project use the terminal to run:
