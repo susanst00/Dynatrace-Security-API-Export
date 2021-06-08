@@ -7,7 +7,7 @@
 
 ## How to get this working?
 
-Well First step is downloading the dependencies. To do so, within the base folder of the project use the terminal to run:
+Well first step is downloading the dependencies. To do so, within the base folder of the project use the terminal to run:
 ```
 npm install
 ```
