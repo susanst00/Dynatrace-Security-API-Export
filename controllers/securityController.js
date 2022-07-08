@@ -39,12 +39,7 @@ exports.getDetailedSecurityProblems = async (req, res) => {
     const namedVulnerableEntities = await Promise.all(
         sorted.map(async (problem) => {
             const vulnerableComponentsReplaced = await Promise.all(problem.vulnerableComponents.map(async (pgi) => {
-                const details = await Promise.all(pgi.affectedEntities.map(async id => {
-                    const pgiDetail = await apiCalls.makeAPICall(`${process.env.TENANT_URL}/api/v1/entity/infrastructure/processes/${id}`, process.env.TOKEN);
-                    // const pgiDetail = await apiCalls.makeAPICall(`${process.env.TENANT_URL}/api/v2/entities?entitySelector=entityId(${id})`, process.env.TOKEN);
-                    return pgiDetail.displayName;
-                }));
-                return details;
+                return pgi.displayName;
             }));
             const affectedEntitiesReplaced = await Promise.all(problem.affectedEntities.map(async (entity) => {
                 const entityDetails = await apiCalls.makeAPICall(`${process.env.TENANT_URL}/api/v2/entities/${entity}`, process.env.TOKEN);
@@ -83,10 +78,10 @@ exports.getDetailedSecurityProblems = async (req, res) => {
 
             delete problem.riskAssessment;
             
-            reachableDataAssetsReplaced.length > 1 ? problem["Reachable Data Assets"] = reachableDataAssetsReplaced : delete problem.reachableDataAssets;
-            vulnerableComponentsReplaced.length > 1 ? problem["Vulnerable Entities"] = vulnerableComponentsReplaced : delete problem.vulnerableComponents;
-            managementZonesReplaced.length > 1 ? problem["Management Zones"] = managementZonesReplaced : delete problem.managementZones;
-            affectedEntitiesReplaced.length > 1 ? problem["Affected Entities"] = affectedEntitiesReplaced : delete problem.affectedEntities;
+            problem["Management Zones"] = managementZonesReplaced;
+            problem["Vulnerable Components"] = vulnerableComponentsReplaced;
+            problem["Reachable Data Assets"] = reachableDataAssetsReplaced;
+            problem["Affected Entities"] = affectedEntitiesReplaced;
             delete problem.affectedEntities;
             delete problem.vulnerableComponents;
             delete problem.managementZones;
@@ -94,10 +89,10 @@ exports.getDetailedSecurityProblems = async (req, res) => {
 
 
             // This is to fix it in excel. 
-             relatedEntitiesAppIdReplaced.length > 1 ? problem["Related Applications"] = relatedEntitiesAppIdReplaced : null;
-             relatedEntitiesServicesReplaced.length > 1 ? problem["Related Services"] = relatedEntitiesServicesReplaced : null;
-             relatedEntitiesHostsReplaced.length > 1 ? problem["Related Hosts"] = relatedEntitiesHostsReplaced : null;
-             relatedEntitiesDatabasesReplaced.length > 1 ? problem["Related Databases"] = relatedEntitiesDatabasesReplaced : null;
+            relatedEntitiesAppIdReplaced.length > 1 ? problem["Related Applications"] = relatedEntitiesAppIdReplaced : null;
+            relatedEntitiesServicesReplaced.length > 1 ? problem["Related Services"] = relatedEntitiesServicesReplaced : null;
+            relatedEntitiesHostsReplaced.length > 1 ? problem["Related Hosts"] = relatedEntitiesHostsReplaced : null;
+            relatedEntitiesDatabasesReplaced.length > 1 ? problem["Related Databases"] = relatedEntitiesDatabasesReplaced : null;
             delete problem.relatedEntities;
 
             //for excel, comment out in web view
@@ -145,6 +140,6 @@ exports.getDetailedSecurityProblems = async (req, res) => {
     // uncomment this line if you want the JSON in the browser
     // return res.send(namedVulnerableEntities);
 
-    const final = converter.JSONToCSVConvertor(namedVulnerableEntities, "SecurityDetails", true);
+    const final = converter.JSONToCSVConvertor(namedVulnerableEntities, "SecurityProblemDetails", true);
     res.send(final)
 }
