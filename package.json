@@ -1,7 +1,7 @@
 {
   "name": "tyler.ouellette",
-  "version": "1.0.0",
-  "description": "KeyUserAction Audit",
+  "version": "2.0.0",
+  "description": "Security API Export",
   "main": "index.js",
   "scripts": {
     "start": "node start.js"
