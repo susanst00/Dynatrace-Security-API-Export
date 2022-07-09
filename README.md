@@ -22,14 +22,11 @@ variables.env is specific because within the start.js file, I reference the path
 From within the variables file it should look as this:
 
 ```
-PROD=https://YourProdTenantURLHere.com
-PROD_TOKEN="Api-Token dt...xxxxxxxxxxx"
-
-NON_PROD=https://YourNonProdTenantURLHere.com
-NONPROD_TOKEN="Api-Token dt...xxxxxxxxxxx"
+TENANT_URL=https://YourProdTenantURLHere.com
+TOKEN="Api-Token dt...xxxxxxxxxxx"
 ```
 
-###### *Note: The Token must be within Quotes and include the "Api-Token dt...xxxxxxxxxxx" format, but the Tenant URL should NOT include quotes around it.*
+###### *Note: The URL must not end with a slack. The Token must be within Quotes and include the "Api-Token dt...xxxxxxxxxxx" format, but the Tenant URL should NOT include quotes around it.*
 
 ## Start It Up
 You have downloaded your dependancies, set your environment variables, whats next? Well fire this bad boy up and run the command:
