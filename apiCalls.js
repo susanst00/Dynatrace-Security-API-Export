@@ -6,6 +6,7 @@ const httpsAgent = new https.Agent({
 });
 
 exports.makeAPICall = async (url, token) => {
+    console.log(url);
     const response = await fetch(url, {
         method: 'GET',
         headers: {

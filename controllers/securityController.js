@@ -23,7 +23,7 @@ exports.getSecurityProblems = async (req, res) => {
 }
 
 exports.getDetailedSecurityProblems = async (req, res) => {
-    const securityProblems = await apiCalls.makeAPICall(`${process.env.TENANT_URL}/api/v2/securityProblems?fields=+riskAssessment,+vulnerableComponents,+managementZones,+affectedEntities,+exposedEntities,+reachableDataAssets&pageSize=500`, process.env.TOKEN);
+    const securityProblems = await apiCalls.makeAPICall(`${process.env.TENANT_URL}/api/v2/securityProblems?pageSize=500`, process.env.TOKEN);
     const SecurityArray = Object.values(securityProblems);
 
     // WHY DOES the security API work for all problems with a + but when you run the get an individual security problem, it needs to be URL encoded? 
@@ -45,6 +45,10 @@ exports.getDetailedSecurityProblems = async (req, res) => {
                 const entityDetails = await apiCalls.makeAPICall(`${process.env.TENANT_URL}/api/v2/entities/${entity}`, process.env.TOKEN);
                 return entityDetails.displayName;
             }));
+
+            if (problem.reachableDataAssets == undefined) {
+                problem.reachableDataAssets = [];
+            }
             const reachableDataAssetsReplaced = await Promise.all(problem.reachableDataAssets.map(async (service) => {
                 const serviceDetails = await apiCalls.makeAPICall(`${process.env.TENANT_URL}/api/v1/entity/services/${service}`, process.env.TOKEN);
                 return serviceDetails.displayName;
@@ -77,7 +81,7 @@ exports.getDetailedSecurityProblems = async (req, res) => {
             problem["Vulnerable Function Usage"] = problem.riskAssessment.vulnerableFunctionUsage
 
             delete problem.riskAssessment;
-            
+
             problem["Management Zones"] = managementZonesReplaced;
             problem["Vulnerable Components"] = vulnerableComponentsReplaced;
             problem["Reachable Data Assets"] = reachableDataAssetsReplaced;
@@ -106,7 +110,7 @@ exports.getDetailedSecurityProblems = async (req, res) => {
             //     problemEvent += ", Number Of Affected Entities: " + each.riskAssessmentSnapshot.numberOfAffectedEntities
             //     problemEvent += ", Public Exploit Available: " + each.riskAssessmentSnapshot.publicExploit;
             //     problemEvent += ", External Exposure: " + each.riskAssessmentSnapshot.exposure;
-            //     problemEvent += ", Number Of Sensitve Data Assets Affected: " + each.riskAssessmentSnapshot.numberOfReachableDataAssets;
+            //     problemEvent += ", Number Of Sensitive Data Assets Affected: " + each.riskAssessmentSnapshot.numberOfReachableDataAssets;
 
             //     return problemEvent;
             // });
@@ -118,16 +122,15 @@ exports.getDetailedSecurityProblems = async (req, res) => {
             problem.firstSeenTimestamp = firstSeenTimestampReplaced;
             problem.lastUpdatedTimestamp = lastUpdatedTimestampReplaced;
 
-            if (problem.relatedContainerImages.containerImages.length < 1) {
-                problem.relatedContainerImages = [];
+            if (problem.relatedContainerImages == undefined) {
+                problem.relatedContainerImages = { "containerImages": [] };
             }
-            else {
-                const relatedContainerImagesReplaced = await Promise.all(problem.relatedContainerImages.containerImages.map(async (pg) => {
-                    const pgDetails = await apiCalls.makeAPICall(`${process.env.PROD}/api/v1/entity/infrastructure/process-groups/${pg.id}`, process.env.TOKEN);
-                    return pgDetails.displayName;
-                }));
-                problem.relatedContainerImages = relatedContainerImagesReplaced;
-            }
+
+            const relatedContainerImagesReplaced = await Promise.all(problem.relatedContainerImages.containerImages.map(async (pg) => {
+                return pg.imageName;
+            }));
+            problem.relatedContainerImages = relatedContainerImagesReplaced;
+
 
             problem["Exposed Entities"] = problem.exposedEntities;
             delete problem.exposedEntities
