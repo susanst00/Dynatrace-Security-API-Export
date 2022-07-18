@@ -6,11 +6,11 @@ const httpsAgent = new https.Agent({
 });
 
 exports.makeAPICall = async (url, token) => {
-    console.log(url);
+    console.log("Trace_ [" + url + "]");
     const response = await fetch(url, {
         method: 'GET',
         headers: {
-            'Accept': '*/*',
+            'Accept': 'application/json,text/csv',
             'Access-Control-Allow-Origin': '*',
             'Accept-Encoding': "gzip,deflate,br",
             'Connection': 'keep-alive',
@@ -18,8 +18,12 @@ exports.makeAPICall = async (url, token) => {
         },
         agent: httpsAgent
     }).catch(e => console.error(e));
-    // return response;
-    return response.json();
+    
+    try {
+        return response.json();
+    }
+    catch(ex) {
+        console.error("Formatter", ex);
+        return null;
+    }
 };
-
-
