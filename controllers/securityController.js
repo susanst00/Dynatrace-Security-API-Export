@@ -188,7 +188,7 @@ exports.getDetailedSecurityProblems = async (req, res) => {
     );
 
     // uncomment this line if you want the JSON in the browser
-    return res.send(namedVulnerableEntities);
+    // return res.send(namedVulnerableEntities);
 
     const final = converter.JSONToCSVConvertor(namedVulnerableEntities, "SecurityProblemDetails", true);
     res.send(final)
